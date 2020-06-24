@@ -10,9 +10,10 @@ def main():
             data.append(json.loads(line))
     
     for d in data:
-        sentences = d['text'].split('\n')
+        sentences = d['text'].replace(' ', '').split('\n')
         for sentence in sentences:
-            result = re.findall(r'Category:(.+)\]+\]+\|*', sentence)
+            result = re.findall(r'\[\[File:(.+)', sentence)
+            result += re.findall(r'\[\[ファイル:(.+)', sentence)
             if len(result) > 0:
                 print(result[0].split('|')[0])
 

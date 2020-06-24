@@ -12,9 +12,10 @@ def main():
     for d in data:
         sentences = d['text'].split('\n')
         for sentence in sentences:
-            result = re.findall(r'Category:(.+)\]+\]+\|*', sentence)
+            result = re.findall(r'==+ (.+) ==+', sentence)
             if len(result) > 0:
-                print(result[0].split('|')[0])
+                level = int(sentence.count('=')/2) - 1
+                print(result[0], level)
 
 
 if __name__ == '__main__':
