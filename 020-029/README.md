@@ -1,5 +1,11 @@
 # setup
 
+## setup environment
+
+```shell script
+pip install requests
+```
+
 ## download dataset
 
 ```shell script
