@@ -131,3 +131,4 @@ dmypy.json
 # sample data
 *.txt
 *.gz
+*.mecab
