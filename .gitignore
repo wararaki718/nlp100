@@ -132,3 +132,8 @@ dmypy.json
 *.txt
 *.gz
 *.mecab
+*.txt.parsed
+
+# sample doc
+040-049/readme.ai.ja.md
+
