@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List
 
 @dataclass
 class Morph:
@@ -12,16 +13,38 @@ class Loader:
     def __init__(self, filename: str):
         self._filename = filename
 
-    def __iter__(self) -> Morph:
+    def __iter__(self) -> List[Morph]:
         with open(self._filename, 'rt') as f:
+            morphs = []
             for line in f:
-                if line[0] == '*':
+                sentence = line.strip()
+                if sentence[0] == '*':
                     continue
-                items = line.split('\t')
+                if sentence == 'EOS':
+                    yield morphs
+                    morphs = []
+                    continue
+                items = sentence.split('\t')
                 results = items[1].split(',')
-                yield Morph(
+                morph = Morph(
                     surface=items[0],
                     base=results[6],
                     pos=results[0],
                     pos1=results[1]
                 )
+                morphs.append(morph)
+
+
+def main():
+    loader = Loader('ai.ja.txt.parsed')
+    sentence_morphs = []
+    for morph in loader:
+        sentence_morphs.append(morph)
+    
+    for morph in sentence_morphs[1]:
+        print(morph)
+    print('DONE')
+
+
+if __name__ == '__main__':
+    main()
