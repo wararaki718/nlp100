@@ -45,6 +45,14 @@ class Loader:
                     )
                     chunk.morphs.append(morph)
 
+
+def is_valid_pos(morphs: List[str], target_pos: str) -> bool:
+    for morph in morphs:
+        if morph.pos == target_pos:
+            return True
+    return False
+
+
 def get_bases(morphs: List[str]) -> List[str]:
     bases = []
     for morph in morphs:
@@ -57,7 +65,7 @@ def get_bases(morphs: List[str]) -> List[str]:
 def get_strs(target_dst: str, chunks: List[Chunk]) -> List[str]:
     bases = []
     for chunk in chunks:
-        if target_dst == chunk.dst:
+        if target_dst == chunk.dst and not is_valid_pos(chunk.morphs, '動詞'):
             bases = get_bases(chunk.morphs)
             break
     return bases
@@ -79,7 +87,7 @@ def main():
     for chunks in sentence_chunks:
         for chunk in chunks:
             base = get_bases(chunk.morphs)
-            if base == []:
+            if base == [] and not is_valid_pos(chunk.morphs, '名詞'):
                 continue
             t = "\t".join(base)
             for src in chunk.srcs:
