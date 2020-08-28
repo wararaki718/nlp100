@@ -3,15 +3,16 @@
 ## setup environment
 
 ```shell script
-brew install cabocha
+brew install cabocha graphviz
 ```
 
 ```shell script
-pip install cabocha-python
+pip install cabocha-python graphviz
 ```
 
 ref
 - http://taku910.github.io/cabocha/
+- https://graphviz.readthedocs.io/en/stable/
 
 ## download a file
 
