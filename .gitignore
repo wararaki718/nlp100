@@ -129,10 +129,14 @@ dmypy.json
 .pyre/
 
 # sample data
-*.txt
+col1.txt
+col2.txt
+popular-names.txt
+neko.txt
+ai.ja.txt
 *.gz
 *.mecab
-*.txt.parsed
+ai.ja.txt.parsed
 
 # sample doc
 040-049/readme.ai.ja.md

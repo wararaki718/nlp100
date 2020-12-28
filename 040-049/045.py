@@ -1,7 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Dict
-
-from graphviz import Digraph
+from typing import List, Dict, Tuple
 
 
 @dataclass
@@ -52,67 +50,47 @@ class Loader:
                         pos=results[0],
                         pos1=results[1]
                     )
-                    chunk.morphs.append(morph)
+                    if morph.pos in ['動詞', '助詞']:
+                        # print(morph.pos, morph.base)
+                        chunk.morphs.append(morph)
 
 
-def get_target_chunk(target_dst: str, chunks: List[Chunk]) -> Chunk:
+def find_verb(chunks: List[Chunk]) -> Tuple[int, Morph]:
+    for i, chunk in enumerate(chunks):
+        for morph in chunk.morphs:
+            if morph.pos == '動詞':
+                return i, morph
+    return -1, None
+
+
+def find_cases(chunks: List[Chunk], index: int) -> List[Morph]:
+    morphs = []
+    s_index = str(index)
     for chunk in chunks:
-        if target_dst == chunk.dst:
-            return chunk
-    return None
-
-
-def plot_tree(edges: List[Dict[str, Chunk]], filename: str):
-    graph = Digraph(format='png')
-
-    nodes = set()
-    for edge in edges:
-        nodes.add(edge['src'].norm_surface)
-        nodes.add(edge['dst'].norm_surface)
-    
-    for node in nodes:
-        graph.node(node)
-    
-    memos = []
-    for edge in edges:
-        src = edge['src'].norm_surface
-        dst = edge['dst'].norm_surface
-        tmp = f'{src}_{dst}'
-        if tmp in memos:
-            continue
-        memos.append(tmp)
-        graph.edge(src, dst)
-    
-    graph.render(filename)
+        if s_index in chunk.srcs:
+            morphs.extend(chunk.morphs)
+    return morphs
 
 
 def main():
-    loader = Loader('ai.ja.txt.parsed')
+    # loader = Loader('ai.ja.txt.parsed')
+    loader = Loader('sample.txt.parsed')
     sentence_chunks = []
     for sentence_chunk in loader:
         if sentence_chunk == []:
             continue
         sentence_chunks.append(sentence_chunk)
-    
-    index = 1
+
+    # print(sentence_chunks)
+    # print()
     for chunks in sentence_chunks:
-        edges = []
-        for chunk in chunks:
-            if chunk.dst == -1 or chunk.norm_surface == '':
-                continue
-            
-            for src in chunk.srcs:
-                dst_chunk = get_target_chunk(src, chunks)
-                if dst_chunk is None or dst_chunk.norm_surface == '':
-                    continue
-                edges.append({'src': chunk, 'dst': dst_chunk})
-        
-        if len(edges) > 0:
-            plot_tree(edges, f'images/tree_{index:04d}')
-            index += 1
-        
-        if index == 5: # debug
-            break
+        index, morph = find_verb(chunks)
+        if index == -1:
+            continue
+        cases = find_cases(chunks, index)
+        result = [morph.base] + [case.base for case in cases]
+        print(' '.join(result))
+
 
     print('DONE')
 
