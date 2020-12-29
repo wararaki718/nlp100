@@ -138,6 +138,7 @@ ai.ja.txt
 *.mecab
 ai.ja.txt.parsed
 data
+model.pkl
 
 # sample doc
 040-049/readme.ai.ja.md
