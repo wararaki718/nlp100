@@ -9,5 +9,5 @@ bash download.sh
 ## setup environment
 
 ```shell
-pip install pandas scikit-learn scipy joblib
+pip install pandas scikit-learn scipy joblib matplotlib
 ```
