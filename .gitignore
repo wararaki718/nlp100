@@ -137,6 +137,7 @@ ai.ja.txt
 *.gz
 *.mecab
 ai.ja.txt.parsed
+data
 
 # sample doc
 040-049/readme.ai.ja.md
