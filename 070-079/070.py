@@ -11,12 +11,12 @@ def vectorize(df: pd.DataFrame, model: gensim.models.KeyedVectors) -> tuple:
     wordset = df.title.apply(lambda x: x.replace('.', '').replace(',', '').replace('!', '').replace('?', '').split())
     vectors = []
     for words in tqdm(wordset):
-        tmp = []
+        total = np.zeros(300)
+        n = 0
         for word in words:
             if word in model.wv:
-                tmp.append(model.wv[word])
-        vector = np.array(tmp)
-        vectors.append(vector.mean(0).tolist())
+                total += model.wv[word]
+        vectors.append((total/n).tolist())
     X = np.array(vectors)
     print(X.shape)
 
