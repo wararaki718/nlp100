@@ -47,7 +47,7 @@ def main():
         'timestamp'
     ]
     df.columns = columns
-    df.drop(['id', 'url', 'publisher', 'story', 'hostname', 'timestamp'], inplace=True)
+    df.drop(['id', 'url', 'publisher', 'story', 'hostname', 'timestamp'], axis=1, inplace=True)
 
     (X, y) = vectorize(df, model)
     del df
