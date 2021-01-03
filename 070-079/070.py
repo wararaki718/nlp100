@@ -1,3 +1,4 @@
+import gc
 import pickle
 
 import gensim
@@ -8,12 +9,12 @@ from tqdm import tqdm
 
 
 def vectorize(df: pd.DataFrame, model: gensim.models.KeyedVectors) -> tuple:
-    wordset = df.title.apply(lambda x: x.replace('.', '').replace(',', '').replace('!', '').replace('?', '').split())
     vectors = []
-    for words in tqdm(wordset):
+    for title in tqdm(df.title):
         total = np.zeros(300)
         n = 0
-        for word in words:
+        title = title.replace('.', '').replace(',', '').replace('!', '').replace('?', '')
+        for word in title.split():
             if word in model.wv:
                 total += model.wv[word]
         vectors.append((total/n).tolist())
@@ -46,8 +47,13 @@ def main():
         'timestamp'
     ]
     df.columns = columns
+    df.drop(['id', 'url', 'publisher', 'story', 'hostname', 'timestamp'], inplace=True)
 
     (X, y) = vectorize(df, model)
+    del df
+    del columns
+    gc.collect()
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, random_state=42, shuffle=True)
     X_valid, X_test, y_valid, y_test = train_test_split(X_test, y_test, train_size=0.5, random_state=42, shuffle=True)
 
