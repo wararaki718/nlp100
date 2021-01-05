@@ -139,6 +139,7 @@ ai.ja.txt
 ai.ja.txt.parsed
 data
 model.pkl
+models
 
 # sample doc
 040-049/readme.ai.ja.md
