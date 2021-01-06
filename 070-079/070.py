@@ -10,19 +10,25 @@ from tqdm import tqdm
 
 def vectorize(df: pd.DataFrame, model: gensim.models.KeyedVectors) -> tuple:
     vectors = []
-    for title in tqdm(df.title):
+    labels = []
+
+    label_map = {'b': 0, 't': 1, 'e': 2, 'm': 3}
+    for title, category in tqdm(zip(df.title, df.category.apply(lambda x: label_map[x]))):
         total = np.zeros(300)
         n = 0
         title = title.replace('.', '').replace(',', '').replace('!', '').replace('?', '')
         for word in title.split():
             if word in model.wv:
                 total += model.wv[word]
-        vectors.append((total/n).tolist())
+                n += 1
+        if n > 0:
+            vectors.append((total/n).tolist())
+            labels.append(category)
     X = np.array(vectors)
-    print(X.shape)
+    y = np.array(labels)
 
-    label_map = {'b': 0, 't': 1, 'e': 2, 'm': 3}
-    y = df.category.apply(lambda x: label_map[x]).values
+    print(X.shape)
+    print(y.shape)
 
     return (X, y)
     
