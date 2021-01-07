@@ -1,4 +1,4 @@
-# chapter 8
+# chapter 9
 
 ## download dataset
 
@@ -9,5 +9,5 @@ bash download.sh
 ## setup environment
 
 ```shell
-pip install pandas
+pip install pandas torch
 ```
