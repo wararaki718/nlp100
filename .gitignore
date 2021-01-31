@@ -146,3 +146,6 @@ models
 040-049/images/*
 
 .vscode
+
+090-099/giza-pp/*
+090-099/mosesdecoder/*
