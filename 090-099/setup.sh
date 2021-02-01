@@ -14,3 +14,11 @@ cd ..
 echo "setup Moses"
 
 echo "DONE"
+
+wget http://www.phontron.com/kytea/download/kytea-0.4.7.tar.gz
+tar xvzf kytea-0.4.7.tar.gz
+cd kytea-0.4.7
+./configure
+make -j4
+sudo ldconfig
+cd ..
