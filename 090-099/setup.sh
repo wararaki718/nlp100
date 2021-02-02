@@ -1,5 +1,7 @@
 #!/bin/bash
 
+## this is a setup script.
+
 git clone https://github.com/moses-smt/giza-pp.git
 cd giza-pp
 make
